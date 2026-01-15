@@ -15,6 +15,7 @@ spec:
       containers:
         - name: mongo
           image: mongo:6
+          args: ["--bind_ip_all"]
           ports:
             - containerPort: 27017
           env:
@@ -22,12 +23,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: MONGO_INITDB_ROOT_USERNAME
+                  key: mongo-user
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: MONGO_INITDB_ROOT_PASSWORD
+                  key: mongo-password
 ---
 apiVersion: v1
 kind: Service

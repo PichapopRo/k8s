@@ -14,44 +14,35 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: nanajanashia/k8s-demo-app:latest
+          image: nanajanashia/k8s-demo-app:v1.0
           ports:
             - containerPort: 3000
           env:
-            - name: MONGO_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-config
-                  key: MONGO_HOST
-            - name: MONGO_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-config
-                  key: MONGO_PORT
-            - name: MONGO_DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-config
-                  key: MONGO_DB_NAME
-            - name: MONGO_USERNAME
+            - name: USER_NAME
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: MONGO_USERNAME
-            - name: MONGO_PASSWORD
+                  key: mongo-user
+            - name: USER_PWD
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: MONGO_PASSWORD
+                  key: mongo-password
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: DB_URL
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: webapp-service
 spec:
-  type: LoadBalancer
   selector:
     app: webapp
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 80
       targetPort: 3000
+  type: LoadBalancer

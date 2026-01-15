@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: mongo-config
 data:
+  DB_URL: mongo-service:27017
   MONGO_HOST: mongo-service
   MONGO_PORT: "27017"
   MONGO_DB_NAME: mydb
